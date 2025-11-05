@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AURORA CHEAT</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f0f9ff;
+        --panel: #e3f2fd;
+        --accent: #bbdefb;
+        --success: #c8e6c9;
+        --warning: #ffccbc;
+        --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+        --transition: 0.3s ease;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+        --radius-sm: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: #1f2a44;
+        overflow: hidden;
+      }
+
+      .cheat-shell {
+        position: relative;
+        width: min(960px, 90vw);
+        height: min(620px, 90vh);
+        padding: 28px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(145deg, rgba(227, 242, 253, 0.75), rgba(255, 255, 255, 0.35));
+        backdrop-filter: blur(12px);
+        box-shadow: var(--glass-shadow);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      .title {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        background-size: 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientSlide 4s ease-in-out infinite;
+      }
+
+      @keyframes gradientSlide {
+        0% {
+          background-position: 0%;
+        }
+        50% {
+          background-position: 100%;
+        }
+        100% {
+          background-position: 0%;
+        }
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .fps-badge {
+        position: relative;
+        padding: 10px 16px;
+        border-radius: var(--radius-sm);
+        background: rgba(187, 222, 251, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        box-shadow: inset 0 0 0 1px rgba(79, 172, 254, 0.18), var(--glass-shadow);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.88;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+      }
+
+      .window-controls {
+        display: flex;
+        gap: 10px;
+      }
+
+      .window-button {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(179, 179, 179, 0.55);
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      }
+
+      .window-button[data-role="minimize"] {
+        background: rgba(255, 204, 188, 0.6);
+      }
+
+      .window-button[data-role="settings"] {
+        background: rgba(200, 230, 201, 0.6);
+      }
+
+      .window-button[data-role="close"] {
+        background: rgba(244, 143, 177, 0.7);
+      }
+
+      .window-button:hover {
+        transform: translateY(-2px) scale(1.1);
+        box-shadow: 0 4px 16px rgba(79, 172, 254, 0.25);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        flex: 1;
+      }
+
+      .panel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: rgba(227, 242, 253, 0.65);
+        backdrop-filter: blur(12px);
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        box-shadow: var(--glass-shadow);
+        padding: 20px;
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+
+      .panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(120deg, rgba(255, 255, 255, 0.6), rgba(187, 222, 251, 0.15));
+        opacity: 0;
+        transition: opacity var(--transition);
+        pointer-events: none;
+      }
+
+      .panel:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(31, 38, 135, 0.18);
+      }
+
+      .panel:hover::before {
+        opacity: 1;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+
+      .panel-header .status {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(187, 222, 251, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(31, 42, 68, 0.9);
+      }
+
+      .slider {
+        position: relative;
+        width: 100%;
+        margin-top: 12px;
+      }
+
+      .slider input[type="range"] {
+        width: 100%;
+        -webkit-appearance: none;
+        background: linear-gradient(90deg, #4facfe, #00f2fe);
+        height: 6px;
+        border-radius: 999px;
+        outline: none;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+      }
+
+      .slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid rgba(79, 172, 254, 0.8);
+        box-shadow: 0 6px 18px rgba(0, 242, 254, 0.35);
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+
+      .slider input[type="range"]::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid rgba(79, 172, 254, 0.8);
+        box-shadow: 0 6px 18px rgba(0, 242, 254, 0.35);
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+
+      .slider input[type="range"]:hover::-webkit-slider-thumb,
+      .slider input[type="range"]:hover::-moz-range-thumb {
+        transform: scale(1.1);
+        box-shadow: 0 10px 24px rgba(79, 172, 254, 0.45);
+      }
+
+      .fov-visual {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        border-radius: var(--radius-md);
+        background: rgba(187, 222, 251, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      select {
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        background: rgba(227, 242, 253, 0.7);
+        backdrop-filter: blur(12px);
+        font-size: 14px;
+        cursor: pointer;
+        box-shadow: var(--glass-shadow);
+        transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      }
+
+      select:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(31, 38, 135, 0.18);
+        background: rgba(227, 242, 253, 0.9);
+      }
+
+      .toggle-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .toggle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-radius: var(--radius-sm);
+        background: rgba(227, 242, 253, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      }
+
+      .toggle:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(31, 38, 135, 0.16);
+      }
+
+      .switch {
+        position: relative;
+        width: 48px;
+        height: 24px;
+        background: rgba(187, 222, 251, 0.55);
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        transition: background var(--transition), box-shadow var(--transition);
+      }
+
+      .switch::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transition: transform var(--transition);
+      }
+
+      .toggle[data-state="on"] .switch {
+        background: rgba(200, 230, 201, 0.85);
+        box-shadow: 0 0 12px rgba(82, 250, 139, 0.28);
+      }
+
+      .toggle[data-state="on"] .switch::after {
+        transform: translateX(24px);
+      }
+
+      .warning {
+        border-left: 4px solid rgba(255, 152, 0, 0.45);
+        background: rgba(255, 204, 188, 0.65);
+      }
+
+      .macro-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .macro-btn {
+        padding: 16px;
+        border-radius: var(--radius-sm);
+        background: rgba(227, 242, 253, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      }
+
+      .macro-btn span {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+
+      .macro-btn:hover {
+        transform: translateY(-4px);
+        background: rgba(187, 222, 251, 0.9);
+        box-shadow: 0 16px 34px rgba(31, 38, 135, 0.18);
+      }
+
+      .status-log {
+        flex: 1;
+        border-radius: var(--radius-sm);
+        background: rgba(227, 242, 253, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        padding: 16px;
+        overflow-y: auto;
+        font-size: 13px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .log-entry {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        box-shadow: 0 4px 12px rgba(31, 38, 135, 0.08);
+        transition: transform var(--transition), box-shadow var(--transition);
+      }
+
+      .log-entry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(31, 38, 135, 0.15);
+      }
+
+      .log-entry .badge {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: rgba(187, 222, 251, 0.6);
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      @media (max-width: 960px) {
+        body {
+          padding: 24px 0;
+        }
+
+        .cheat-shell {
+          width: min(640px, 100vw);
+          height: auto;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+          overflow-y: auto;
+          padding-bottom: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cheat-shell">
+      <header class="header">
+        <div class="title">AURORA CHEAT</div>
+        <div class="header-actions">
+          <div class="fps-badge" id="fpsBadge">FPS: 144</div>
+          <div class="window-controls">
+            <div class="window-button" data-role="minimize" title="Minimize"></div>
+            <div class="window-button" data-role="settings" title="Settings"></div>
+            <div class="window-button" data-role="close" title="Close"></div>
+          </div>
+        </div>
+      </header>
+      <section class="grid">
+        <article class="panel" id="aimbotPanel">
+          <div class="panel-header">
+            <span>Aimbot Suite</span>
+            <span class="status">Active</span>
+          </div>
+          <div>
+            <label for="smoothnessRange">Smoothness <span id="smoothnessValue">72%</span></label>
+            <div class="slider">
+              <input type="range" id="smoothnessRange" min="0" max="100" value="72" />
+            </div>
+          </div>
+          <div>
+            <label>FOV Visualizer</label>
+            <div class="fov-visual">
+              <canvas id="fovCanvas" width="400" height="400"></canvas>
+            </div>
+          </div>
+          <div>
+            <label for="boneSelect">Bone Priority</label>
+            <select id="boneSelect">
+              <option value="head">🎯 Head</option>
+              <option value="neck">🦴 Neck</option>
+              <option value="chest" selected>🛡 Chest</option>
+              <option value="pelvis">⚙ Pelvis</option>
+            </select>
+          </div>
+        </article>
+        <article class="panel" id="visualPanel">
+          <div class="panel-header">
+            <span>Visual Enhancements</span>
+            <span class="status">Prime</span>
+          </div>
+          <div class="toggle-group">
+            <div class="toggle" data-state="on" data-toggle="esp">
+              <span>ESP Overlay</span>
+              <div class="switch"></div>
+            </div>
+            <div class="toggle" data-state="on" data-toggle="glow">
+              <span>Reactive Glow</span>
+              <div class="switch"></div>
+            </div>
+            <div class="toggle warning" data-state="off" data-toggle="chams">
+              <span>Heatmap Chams</span>
+              <div class="switch"></div>
+            </div>
+          </div>
+          <div>
+            <label for="paletteSelect">Palette Mode</label>
+            <select id="paletteSelect">
+              <option value="aurora" selected>🌌 Aurora</option>
+              <option value="dusk">🌇 Dusk</option>
+              <option value="neon">🌈 Neon</option>
+              <option value="ghost">👻 Ghost</option>
+            </select>
+          </div>
+        </article>
+        <article class="panel" id="automationPanel">
+          <div class="panel-header">
+            <span>Automation Macros</span>
+            <span class="status">Synced</span>
+          </div>
+          <div class="macro-grid">
+            <button class="macro-btn" data-macro="bunnyhop">
+              Bunny Hop
+              <span>Keybind: Space</span>
+            </button>
+            <button class="macro-btn" data-macro="spray">
+              Spray Pattern
+              <span>Keybind: Mouse4</span>
+            </button>
+            <button class="macro-btn" data-macro="rapidfire">
+              Rapid Fire
+              <span>Keybind: Mouse5</span>
+            </button>
+            <button class="macro-btn warning" data-macro="autobuy">
+              Auto Buy
+              <span>Keybind: F3</span>
+            </button>
+          </div>
+          <div class="toggle-group">
+            <div class="toggle" data-state="on" data-toggle="timers">
+              <span>Macro Timer Sync</span>
+              <div class="switch"></div>
+            </div>
+            <div class="toggle" data-state="off" data-toggle="randomization">
+              <span>Pattern Randomization</span>
+              <div class="switch"></div>
+            </div>
+          </div>
+        </article>
+        <article class="panel" id="telemetryPanel">
+          <div class="panel-header">
+            <span>Telemetry Hub</span>
+            <span class="status">Live</span>
+          </div>
+          <div class="status-log" id="statusLog"></div>
+        </article>
+      </section>
+    </div>
+    <script>
+      const fpsBadge = document.getElementById("fpsBadge");
+      let fps = 140;
+      const fpsInterval = setInterval(() => {
+        fps += Math.random() > 0.5 ? 1 : -1;
+        fps = Math.min(240, Math.max(90, fps));
+        fpsBadge.textContent = `FPS: ${fps}`;
+      }, 1200);
+
+      const smoothnessRange = document.getElementById("smoothnessRange");
+      const smoothnessValue = document.getElementById("smoothnessValue");
+      smoothnessRange.addEventListener("input", () => {
+        smoothnessValue.textContent = `${smoothnessRange.value}%`;
+        drawFOV(parseInt(smoothnessRange.value, 10));
+      });
+
+      const toggles = Array.from(document.querySelectorAll(".toggle"));
+      toggles.forEach((toggle) => {
+        toggle.addEventListener("click", () => {
+          const isOn = toggle.getAttribute("data-state") === "on";
+          toggle.setAttribute("data-state", isOn ? "off" : "on");
+          addLog(
+            `${toggle.querySelector("span").textContent} ${isOn ? "disabled" : "enabled"}`,
+            isOn ? "warning" : "stable"
+          );
+        });
+      });
+
+      const macroButtons = Array.from(document.querySelectorAll(".macro-btn"));
+      macroButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          button.classList.add("active");
+          setTimeout(() => button.classList.remove("active"), 320);
+          addLog(`${button.textContent.trim().split("\n")[0]} macro executed`, "success");
+        });
+      });
+
+      const logContainer = document.getElementById("statusLog");
+      const logPalette = {
+        success: "rgba(200, 230, 201, 0.85)",
+        warning: "rgba(255, 204, 188, 0.85)",
+        stable: "rgba(187, 222, 251, 0.85)",
+      };
+
+      function addLog(message, type = "stable") {
+        const entry = document.createElement("div");
+        entry.className = "log-entry";
+        entry.style.background = logPalette[type] || logPalette.stable;
+        const timestamp = new Date().toLocaleTimeString();
+        entry.innerHTML = `<span>${message}</span><span class="badge">${timestamp}</span>`;
+        logContainer.prepend(entry);
+        if (logContainer.children.length > 10) {
+          logContainer.removeChild(logContainer.lastChild);
+        }
+      }
+
+      const canvas = document.getElementById("fovCanvas");
+      const ctx = canvas.getContext("2d");
+      function drawFOV(percent) {
+        if (!ctx) return;
+        const { width, height } = canvas;
+        ctx.clearRect(0, 0, width, height);
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const maxRadius = Math.min(width, height) / 2 - 20;
+        const radius = (percent / 100) * maxRadius;
+        const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius);
+        gradient.addColorStop(0, "rgba(79, 172, 254, 0.75)");
+        gradient.addColorStop(1, "rgba(0, 242, 254, 0.1)");
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "rgba(79, 172, 254, 0.85)";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 6, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0, 242, 254, 0.9)";
+        ctx.fill();
+      }
+
+      drawFOV(parseInt(smoothnessRange.value, 10));
+      addLog("Aimbot Suite synchronized", "success");
+      addLog("Macro Scheduler awaiting input", "stable");
+      addLog("Telemetry streams calibrated", "success");
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          clearInterval(fpsInterval);
+        }
+      });
+    </script>
+  </body>
+</html>
